@@ -77,7 +77,7 @@ void loop() {
 
 **Don't forget to replace the text below with the embedding for your milestone video. Go to Youtube, click Share -> Embed, and copy and paste the code to replace what's below.**
 
-<iframe width="560" height="315" src="https://www.youtube.com/watch?v=6VLap-Eq1X8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/6VLap-Eq1X8?si=N1XxQ3PWybVsjphl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 - For my starter project, I built the Weevil eye. It works by having a photo sensor determine whether there is light nearby, and when it detects darkness, the transistor captures this signal and provides current to the LEDs through the resistors in order for the LEDs to light up.
 - I soldered the parts together (The LEDs, the transistor, the photo sensor, Ohm resistors, and battery holder.
