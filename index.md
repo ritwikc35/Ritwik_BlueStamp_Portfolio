@@ -56,8 +56,87 @@ For your first milestone, describe what your project is and how you plan to buil
 <!--# Schematics 
 Here's where you'll put images of your schematics. [Tinkercad](https://www.tinkercad.com/blog/official-guide-to-tinkercad-circuits) and [Fritzing](https://fritzing.org/learning/) are both great resoruces to create professional schematic diagrams, though BSE recommends Tinkercad becuase it can be done easily and for free in the browser. -->
 
-<!--# Code
-Here's where you'll put your code. The syntax below places it into a block of code. Follow the guide [here]([url](https://www.markdownguide.org/extended-syntax/)) to learn how to customize it to your project needs. -->
+# Code
+#include <Adafruit_LSM6DS3TRC.h>
+#include <Adafruit_LIS3MDL.h>
+
+Adafruit_LSM6DS3TRC lsm6ds;
+Adafruit_LIS3MDL lis3mdl;
+
+// ---------- Pins ----------
+#define FLEX_PIN   32   // analog input from flex sensor divider
+#define BUZZER_PIN 13   // active buzzer
+
+// ---------- Thresholds (RAW values, no angle math) ----------
+// Set FLEX_LIMIT to the raw reading you get at ~90 degrees of bend.
+// Watch the Serial Monitor, bend to 90, note the number, put it here.
+const int FLEX_UPPER_LIMIT = 2070;
+const int FLEX_LOWER_LIMIT = 700;  // <-- raw reading that means "bent too far"
+const float INWARD_THRESHOLD = 5.0;   // accelerometer side-tilt (this already works)
+
+void setup() {
+  Serial.begin(115200);
+  while (!Serial) delay(10);
+
+  pinMode(BUZZER_PIN, OUTPUT);
+  Wire.begin(21, 22);
+
+  if (!lsm6ds.begin_I2C()) {
+    Serial.println("LSM6DS3TR-C not found - check wiring!");
+    while (1) delay(10);
+  }
+  if (!lis3mdl.begin_I2C()) {
+    Serial.println("LIS3MDL not found - check wiring!");
+    while (1) delay(10);
+  }
+  Serial.println("Sensors ready.");
+}
+
+// Long continuous buzz = bent too far
+void buzzOverBend() {
+  digitalWrite(BUZZER_PIN, HIGH);
+  delay(600);
+  digitalWrite(BUZZER_PIN, LOW);
+}
+
+// Two short beeps = knee caving inward
+void beepInward() {
+  for (int i = 0; i < 2; i++) {
+    digitalWrite(BUZZER_PIN, HIGH);
+    delay(120);
+    digitalWrite(BUZZER_PIN, LOW);
+    delay(120);
+  }
+}
+
+void loop() {
+  // --- Flex sensor: raw reading, no conversion ---
+  int flexRaw = analogRead(FLEX_PIN);
+
+  // --- Accelerometer: side-to-side tilt ---
+  sensors_event_t accel, gyro, temp;
+  lsm6ds.getEvent(&accel, &gyro, &temp);
+  float sideTilt = accel.acceleration.x;
+
+  // --- Print both so you can see what's happening ---
+  Serial.print("Flex raw: ");        Serial.print(flexRaw);
+  Serial.print("  |  SideTilt: ");   Serial.print(sideTilt);
+  Serial.println(" m/s^2");
+
+  // --- Trigger 1: flex sensor bent past the raw limit ---
+  if ( (flexRaw > FLEX_UPPER_LIMIT) || (flexRaw < FLEX_LOWER_LIMIT) ) {
+    Serial.println(">>> OVER-BEND! Come back up.");
+    buzzOverBend();
+  }
+
+  // --- Trigger 2: knee caving inward (already working) ---
+  if (sideTilt > INWARD_THRESHOLD) {
+    Serial.println(">>> KNEE CAVING INWARD! Fix form.");
+    beepInward();
+  }
+
+  delay(100);
+}
 
 <!--```c++
 void setup() {
