@@ -69,11 +69,9 @@ Adafruit_LIS3MDL lis3mdl;
 #define BUZZER_PIN 13   // active buzzer
 
 // ---------- Thresholds (RAW values, no angle math) ----------
-// Set FLEX_LIMIT to the raw reading you get at ~90 degrees of bend.
-// Watch the Serial Monitor, bend to 90, note the number, put it here.
-const int FLEX_UPPER_LIMIT = 2070;
-const int FLEX_LOWER_LIMIT = 700;  // <-- raw reading that means "bent too far"
-const float INWARD_THRESHOLD = 5.0;   // accelerometer side-tilt (this already works)
+const int FLEX_UPPER_LIMIT = 2070; // raw reading that means "bent too far"
+const int FLEX_LOWER_LIMIT = 700;  // raw reading that means "bent too far"
+const float INWARD_THRESHOLD = 5.0;   // accelerometer side-tilt 
 
 void setup() {
   Serial.begin(115200);
