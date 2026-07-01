@@ -28,7 +28,7 @@ For your final milestone, explain the outcome of your project. Key details to in
 - What you hope to learn in the future after everything you've learned at BSE
 
 -->
-<!--
+
 # Second Milestone
 
 **Don't forget to replace the text below with the embedding for your milestone video. Go to Youtube, click Share -> Embed, and copy and paste the code to replace what's below.**
@@ -41,7 +41,110 @@ For your second milestone, explain what you've worked on since your previous mil
 - Previous challenges you faced that you overcame
 - What needs to be completed before your final milestone 
 
---> 
+# Code
+```c++
+#include <Adafruit_LSM6DS3TRC.h>
+Adafruit_LSM6DS3TRC lsm6ds;
+
+// ---------- Pins ----------
+#define FLEX_PIN   32   // analog input from flex sensor divider
+#define BUZZER_PIN 13   // active buzzer
+
+// ---- Squat detection (X axis) ----
+const float SQUAT_X_THRESHOLD = 9.0;   // X below this = squat, above = standing
+
+// ---- Cave detection (Z axis) ----
+const float CAVE_Z_THRESHOLD = -2.0;   // while squatting, Z below this = caving
+
+// ---- Flex over-bend (raw values) ----
+const int FLEX_UPPER_LIMIT = 2070;   // raw reading = bent too far
+const int FLEX_LOWER_LIMIT = 320;    // raw reading = bent too far (other direction)
+
+// ---- Consecutive-reading confirmation ----
+const int CAVE_CONFIRM_COUNT = 2;    // caving reads in a row needed to buzz
+
+const int SAMPLES = 5;   // light averaging
+
+int caveStreak = 0;      // counts consecutive caving readings
+
+void setup() {
+  Serial.begin(115200);
+  while (!Serial) delay(10);
+  pinMode(BUZZER_PIN, OUTPUT);
+  Wire.begin(21, 22);
+  if (!lsm6ds.begin_I2C()) { Serial.println("Sensor not found!"); while (1) delay(10); }
+  Serial.println("Ready - start squatting!");
+}
+
+// Two short beeps = knee caving inward
+void beepInward() {
+  for (int i = 0; i < 2; i++) {
+    digitalWrite(BUZZER_PIN, HIGH); delay(120);
+    digitalWrite(BUZZER_PIN, LOW);  delay(120);
+  }
+}
+
+// Long continuous buzz = bent too far
+void buzzOverBend() {
+  digitalWrite(BUZZER_PIN, HIGH);
+  delay(600);
+  digitalWrite(BUZZER_PIN, LOW);
+}
+
+void loop() {
+  // --- Flex sensor: raw reading ---
+  int flexRaw = analogRead(FLEX_PIN);
+
+  // --- Accelerometer: averaged X and Z ---
+  float xAvg = 0, zAvg = 0;
+  for (int i = 0; i < SAMPLES; i++) {
+    sensors_event_t a, g, t;
+    lsm6ds.getEvent(&a, &g, &t);
+    xAvg += a.acceleration.x;
+    zAvg += a.acceleration.z;
+    delay(5);
+  }
+  xAvg /= SAMPLES;
+  zAvg /= SAMPLES;
+
+  bool inSquat = (xAvg < SQUAT_X_THRESHOLD);
+  bool caving  = inSquat && (zAvg < CAVE_Z_THRESHOLD);
+
+  // --- Track consecutive caving readings ---
+  if (caving) {
+    caveStreak++;
+  } else {
+    caveStreak = 0;
+  }
+
+  // --- Print everything ---
+  Serial.print("Flex: ");   Serial.print(flexRaw);
+  Serial.print(" | X: ");   Serial.print(xAvg, 2);
+  Serial.print(" | Z: ");   Serial.print(zAvg, 2);
+  if (!inSquat)      Serial.print("  -> STANDING");
+  else if (caving)   Serial.print("  -> SQUATTING WHILE CAVING!");
+  else               Serial.print("  -> SQUAT (good)");
+  Serial.println();
+
+  // --- Fault 1: knee caving inward (needs consecutive confirmation) ---
+  if (caveStreak >= CAVE_CONFIRM_COUNT) {
+    Serial.println(">>> KNEE CAVING INWARD!");
+    beepInward();
+    caveStreak = 0;
+  }
+
+  // --- Fault 2: flex sensor bent too far ---
+  if ( (flexRaw > FLEX_UPPER_LIMIT) || (flexRaw < FLEX_LOWER_LIMIT) ) {
+    Serial.println(">>> OVER-BEND! Come back up.");
+    buzzOverBend();
+  }
+
+  delay(50);
+}
+```
+
+
+
 # First Milestone
 
 <!--**Don't forget to replace the text below with the embedding for your milestone video. Go to Youtube, click Share -> Embed, and copy and paste the code to replace what's below.**-->
