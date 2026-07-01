@@ -1,1 +1,1 @@
-This repository is a template for documenting BlueStamp Engineering projects. Users should replace this text with a description of what their project is and what their repository holds. 
+This repository is me showcasing my Knee Rehabilitation device that I built in the summer of 2026 at BlueStamp Engineering. 
