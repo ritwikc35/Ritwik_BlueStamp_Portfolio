@@ -35,7 +35,13 @@ For your final milestone, explain the outcome of your project. Key details to in
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/TdamHaCC3TY?si=wYPMolTd6gKOe3nP" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-- Milestone 2
+- Milestone 2 was a big step - all the electronic components are now on the knee sleeve using tape
+- In the future, these components will al be sewn down in a much more aesthetically pleasing fashion
+- This milestone featured a lot of coding challenges, especially in programming the Adafruit sensors (accelerometer, gyroscope) in order to determine whether the user's knee was caving in during a squat with bad form
+- The flex sensor being mounted to the back of the knee was a design choice that I made after trying it on various different locations - on the back allowed for the most precision and accuracy when determening knee bend
+- It took lots of trial and error determening different axis values, and even the correct point on the knee sleeve to mount the sensors
+- I didn't understand at first how I was going to connect everything to the knee sleeve and have it working initially - now with trial and error and persistance, I was able to figure out a way.
+- Milestone three will involve sewing all the components to the knee sleeve, integrating a session tracker (reps, sets, etc) into the code, streaming session data over bluetooth/wifi to a handheld device, and ensuring the wires are all secure and that none will come off easily.
 
 # Code
 ```c++
