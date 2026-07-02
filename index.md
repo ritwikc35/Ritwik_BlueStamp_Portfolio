@@ -159,17 +159,6 @@ void loop() {
 - A few challenges I faced was using the breadboard for the first time hands-on: the ESP-32 used was slightly too wide for one breadboard, so it took a few iterations to wire the ESP-32 along with the rest of the components in a way that was aesthetically clean and also the easiest to work with.
 - The next milestone and the rest of the plan to complete this project includes integrating this hardware with a knee sleeve, and ensuring all the components do their job when the user is performing a squat. 
 
-# Starter Project
-
-<!--**Don't forget to replace the text below with the embedding for your milestone video. Go to Youtube, click Share -> Embed, and copy and paste the code to replace what's below.** -->
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/6VLap-Eq1X8?si=N1XxQ3PWybVsjphl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
-- For my starter project, I built the Weevil eye. It works by having a photo sensor determine whether there is light nearby, and when it detects darkness, the transistor captures this signal and provides current to the LEDs through the resistors in order for the LEDs to light up.
-- I soldered the parts together (The LEDs, the transistor, the photo sensor, Ohm resistors, and battery holder.
-- A few challenges that I faced when building my starter project were having to de-solder parts that I put in with incorrect polarity, I ended up fixing it. 
-- It was a good introductory to working with electrical parts and it built the foundation I needed to work on my main project. 
-
 # Code
 ```c++
 #include <Adafruit_LSM6DS3TRC.h>
@@ -251,6 +240,18 @@ void loop() {
   delay(100);
 }
 ```
+
+# Starter Project
+
+<!--**Don't forget to replace the text below with the embedding for your milestone video. Go to Youtube, click Share -> Embed, and copy and paste the code to replace what's below.** -->
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/6VLap-Eq1X8?si=N1XxQ3PWybVsjphl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+- For my starter project, I built the Weevil eye. It works by having a photo sensor determine whether there is light nearby, and when it detects darkness, the transistor captures this signal and provides current to the LEDs through the resistors in order for the LEDs to light up.
+- I soldered the parts together (The LEDs, the transistor, the photo sensor, Ohm resistors, and battery holder.
+- A few challenges that I faced when building my starter project were having to de-solder parts that I put in with incorrect polarity, I ended up fixing it. 
+- It was a good introductory to working with electrical parts and it built the foundation I needed to work on my main project. 
+
 
 <!--# Schematics 
 Here's where you'll put images of your schematics. [Tinkercad](https://www.tinkercad.com/blog/official-guide-to-tinkercad-circuits) and [Fritzing](https://fritzing.org/learning/) are both great resoruces to create professional schematic diagrams, though BSE recommends Tinkercad becuase it can be done easily and for free in the browser. -->
