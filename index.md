@@ -1,5 +1,5 @@
 # Knee Rehabilitation Device
-Replace this text with a brief description (2-3 sentences) of your project. This description should draw the reader in and make them interested in what you've built. You can include what the biggest challenges, takeaways, and triumphs from completing the project were. As you complete your portfolio, remember your audience is less familiar than you are with all that your project entails!
+This project is a wearable knee rehabilitation device that helps people perform squats with safe, correct form during recovery. Built around an ESP32 microcontroller, it uses a flex sensor to track how deep the knee bends and an accelerometer + gyroscope to detect when the knee caves inward, sounding a buzzer in real time so the user can correct themselves instantly. The biggest challenge was translating messy, noisy sensor data into reliable feedback: it took lots of testing and calibration to figure out which sensor readings actually corresponded to a good squat versus a bad one, but landing on a system that counts reps, tracks range of motion, and catches bad form the moment it happens made all the debugging worth it.
 
 <!--You should comment out all portions of your portfolio that you have not completed yet, as well as any instructions:
 ```HTML 
