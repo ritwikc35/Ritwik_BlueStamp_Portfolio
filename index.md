@@ -261,16 +261,16 @@ Here's where you'll put images of your schematics. [Tinkercad](https://www.tinke
 Here's where you'll put images of your schematics. [Tinkercad](https://www.tinkercad.com/blog/official-guide-to-tinkercad-circuits) and [Fritzing](https://fritzing.org/learning/) are both great resoruces to create professional schematic diagrams, though BSE recommends Tinkercad becuase it can be done easily and for free in the browser. -->
 
 
-<!--# Bill of Materials
+# Bill of Materials
 Here's where you'll list the parts in your project. To add more rows, just copy and paste the example rows below.
 Don't forget to place the link of where to buy each component inside the quotation marks in the corresponding row after href =. Follow the guide [here]([url](https://www.markdownguide.org/extended-syntax/)) to learn how to customize this to your project needs. 
 
 | **Part** | **Note** | **Price** | **Link** |
 |:--:|:--:|:--:|:--:|
-| Item Name | What the item is used for | $Price | <a href="https://www.amazon.com/Arduino-A000066-ARDUINO-UNO-R3/dp/B008GRTSV6/"> Link </a> |
-| Item Name | What the item is used for | $Price | <a href="https://www.amazon.com/Arduino-A000066-ARDUINO-UNO-R3/dp/B008GRTSV6/"> Link </a> |
-| Item Name | What the item is used for | $Price | <a href="https://www.amazon.com/Arduino-A000066-ARDUINO-UNO-R3/dp/B008GRTSV6/"> Link </a> |
-
+| 2.1 x 3.2 in Breadboard | Wiring together the microcontroller and sensors | $2.99 | <a href="[https://www.amazon.com/Arduino-A000066-ARDUINO-UNO-R3/dp/B008GRTSV6/](https://www.amazon.com/Electronix-Express-03MB801-Solderless-BreadBoard/dp/B005GYAIES/ref=sr_1_4?crid=3TFO3YV2C0RGV&dib=eyJ2IjoiMSJ9.iI9Qcy3WKpuTy3pEqkAEC2otBFTE8Y3NQycTtfLqMWVVx9K6r-ApLIMFcw8eWohpPsiB9m0Riny6KXAUiJYTfDJGsDdRwnrsI80-EmGhH4o1wvRVNJybvE9ZXxu_TaOeo8dV8WAt7wxJjLGFXeDsmwGmZ4lisxDEHD9TFefLDQBdPDIroN_4flJqSZwE6miNLwrQVowFEdTkduGxrWM4r9anfsLcxjzu0FCcXG83IyM.w_ZEGms_FH1bxrE79u62tv-T_GMp6ZGHn31hHfzrFcY&dib_tag=se&keywords=2.1%2Bx%2B3.2%2Bbreadboard&qid=1783007815&sprefix=2.1%2Bx%2B3.2%2Bbreabdoa%2Caps%2C208&sr=8-4&th=1)"> Link </a> |
+| ESP32 CP2102 | Microcontroller allowing all the sensors to communicate (WiFi, Bluetooth) | $9.39 | <a href="[https://www.amazon.com/Arduino-A000066-ARDUINO-UNO-R3/dp/B008GRTSV6/](https://www.amazon.com/AITRIP-ESP-WROOM-32-Development-Microcontroller-Integrated/dp/B07WCG1PLV/ref=sr_1_3?crid=SGA8GEL9984K&dib=eyJ2IjoiMSJ9.Hje1sLvRZipVhAPaHZxgtWaUKJecWiUIqimtd2pu9Eg06FjxPw0SnsgKa43LldUnk3P1ueuFeYzqgmTVYBw2tvRKzCluHlAgtzRk3XaT5w9yw575t_lYWsTUIWImgcXriY0AL_T4OOTCKw9Bsb3Bvh84FgXLfFABXvIAWrP0KZiQWj1hzUcAvncIqVTYUDKGVRxMDkWRnXRH2V5uUZSopn4u0fUaGp-S6ihxvDPVY1setuf_zFUaKWPAB-YX4U_P8koFvwRxpKbvOU6uxdNQaVe1TsCBNa35GaFiNNud_K8.8XKCieKI1WHWUR9_26o2IEpG9XdFZQyOgIjY56kYZ10&dib_tag=se&keywords=ESP32%2BCP2102&qid=1783007868&s=electronics&sprefix=%2Celectronics%2C347&sr=1-3&th=1)"> Link </a> |
+| USB Type C Cable | Connect the ESP-32 microcontroller to the laptop | $9.99 | <a href="https://www.amazon.com/Arduino-A000066-ARDUINO-UNO-R3/dp/B008GRTSV6/"> Link </a> |
+<!--
 # Other Resources/Examples
 One of the best parts about Github is that you can view how other people set up their own work. Here are some past BSE portfolios that are awesome examples. You can view how they set up their portfolio, and you can view their index.md files to understand how they implemented different portfolio components.
 - [Example 1](https://trashytuber.github.io/YimingJiaBlueStamp/)
