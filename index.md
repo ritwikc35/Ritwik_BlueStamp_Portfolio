@@ -276,6 +276,9 @@ Here's where you'll put images of your schematics. [Tinkercad](https://www.tinke
 | Jumper Wires | Connect all the sensors, buzzers, and controllers via the breadboard | $1.95 | <a href="https://www.adafruit.com/product/1953?gad_source=1&gad_campaignid=23969092792&gbraid=0AAAAADx9JvRY0IzrWNJJAcyDmg4KptFD0&gclid=CjwKCAjwmJjSBhB-EiwAkZgxi8k_84mON50a65a2L-K4CZ_KWhdd5pSoWaosAUHNLOqTZ9boJJB2hBoCsf8QAvD_BwE"> Link </a> |
 | Knee Compression Sleeve | Mount all electronic equipment to straddle the knee on this | $12.99 | <a href="https://www.amazon.com/Compression-Sleeve-Support-Running-Medium/dp/B0987XL3WV/ref=sr_1_16?crid=2W6XWLEBPIA9L&dib=eyJ2IjoiMSJ9.FMxH8-_ulIvKRL0eQJ1F8ebw-_g-rpsi-0NMsOOghfd235eBGyebm0frShQ9UtNIfo01hYDCwvoC6O9eS_K80CGnPQ1pnf-b9yccqZPu14YyCTi3-I4FtIdPf5_dcJ8VM5jtwBsEr7M9WDqxbTXoXEROWPMo8xpTzHWd2Ud9_F23nt7ZZccxKGG2FGPhe8nYKtHmKRUJA1yXbMNAAS3yBb2Pc4VtFNojLrf8fJ_SpbcziEQqkElBdLxoFh12t6Y4sWsHV6aTMzMZaXR7OYN4D4qXeVFScJBLEQGmqHGU11M.8tCS5a8HKsH7oFpNNo9eB98cJCQ53gxXFRe2g9pozuw&dib_tag=se&keywords=knee%2Bcompression%2Bsleeve&qid=1783009830&sprefix=knee%2Bcompression%2Bsleev%2Caps%2C166&sr=8-16&th=1"> Link </a> |
 | Flex Sensor 4.5" | Detect a bend and send current to the buzzer when a specific bend is reached | $12.95 | <a href="https://www.adafruit.com/product/182?srsltid=AfmBOoqQkAp_6FrmD8PKZpHYrzxGymBcMme9gt24bTR6xO3JBTOPKlcQ"> Link </a> |
+
+
+
 <!--
 # Other Resources/Examples
 One of the best parts about Github is that you can view how other people set up their own work. Here are some past BSE portfolios that are awesome examples. You can view how they set up their portfolio, and you can view their index.md files to understand how they implemented different portfolio components.
