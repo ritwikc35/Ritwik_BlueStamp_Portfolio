@@ -9,7 +9,7 @@ This project is a wearable knee rehabilitation device that helps people perform 
 
 | **Engineer** | **School** | **Area of Interest** | **Grade** |
 |:--:|:--:|:--:|:--:|
-| Ritwik C | Evergreen Valley High School | Mechanical Engineering | Incoming Junior
+| Ritwik C | Evergreen Valley High School | Computer Science | Incoming Junior
 
 <!--**Replace the BlueStamp logo below with an image of yourself and your completed project. Follow the guide [here](https://tomcam.github.io/least-github-pages/adding-images-github-pages-site.html) if you need help.** -->
 
@@ -278,12 +278,15 @@ Here's where you'll put images of your schematics. [Tinkercad](https://www.tinke
 | Flex Sensor 4.5" | Detect a bend and send current to the buzzer when a specific bend is reached | $12.95 | <a href="https://www.adafruit.com/product/182?srsltid=AfmBOoqQkAp_6FrmD8PKZpHYrzxGymBcMme9gt24bTR6xO3JBTOPKlcQ"> Link </a> |
 
 
-
+                
 <!--
 # Other Resources/Examples
 One of the best parts about Github is that you can view how other people set up their own work. Here are some past BSE portfolios that are awesome examples. You can view how they set up their portfolio, and you can view their index.md files to understand how they implemented different portfolio components.
 - [Example 1](https://trashytuber.github.io/YimingJiaBlueStamp/)
 - [Example 2](https://sviatil0.github.io/Sviatoslav_BSE/)
 - [Example 3](https://arneshkumar.github.io/arneshbluestamp/)
+
+Links for helpful stuff:
+
 
 To watch the BSE tutorial on how to create a portfolio, click here. -->
