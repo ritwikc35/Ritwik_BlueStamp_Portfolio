@@ -253,7 +253,7 @@ void loop() {
 
 # Schematic
 
-![Schematic](/docs/assets/Schematic1.png)
+![Schematic](/docs/assets/schematic2.png)
 
 # Starter Project
 
