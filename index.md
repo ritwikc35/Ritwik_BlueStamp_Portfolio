@@ -269,13 +269,14 @@ void loop() {
 
 ![Schematic](/docs/assets/schematic2.png)
 
+## Labels:
+
 1. ESP-32 Microcontroller. This microcontroller is the brains of the entire circuit, and it bridges the gap of the communication between the laptop delivering the code and the other sensors/parts in the circuit.
 2. Adafruit Adafruit LSM6DS3TR-C + LIS3MDL (IMU - Gyroscope + Accelerometer). This sensor tracks translational acceleration and position in three axes, and the gyroscope measures angular velocity in three axes. This was used to determine whether the knee is caving inwards during a squat or not, using the IMU.
 3. Flex Sensor. This sensor has particles lined up within the length of the body, and as the flex sensor bends, the particles' distance between each other increases. When this distance increases, the resistance pulling these particles back together also increases. The sensor tracks this resistance, and determines the value for the flex sensor dependent on how bent it is.
 4. Active Buzzer. Gets current from breadboard and ESP-32 to, when prompted, create a beeping sound. This sound cannot be altered pitch or frequency wise, however what can be altered is the buzzing pattern. I used this to differentiate the improper form caused by knee caving versus over-bend.
 5. 10k Ω Resistor. This resistor is used to limit the current from the ESP-32 to the Flex Sensor to prevent a short circuit.
 6. STEMMA QT / Qwiic JST SH 4-pin cable. This cable is used to connect into the Adafruit IMU. It has four cables - Red, Black, Blue, and Yellow. Red goes to power (3V3), Black goes to ground (GND), and Blue and Yellow go to the D21 and D22 pinouts in the microcontroller.
-7. 
 
 <!--# Schematics 
 Here's where you'll put images of your schematics. [Tinkercad](https://www.tinkercad.com/blog/official-guide-to-tinkercad-circuits) and [Fritzing](https://fritzing.org/learning/) are both great resoruces to create professional schematic diagrams, though BSE recommends Tinkercad becuase it can be done easily and for free in the browser. -->
