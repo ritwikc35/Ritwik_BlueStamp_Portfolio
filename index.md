@@ -27,6 +27,174 @@ For your final milestone, explain the outcome of your project. Key details to in
 - A summary of key topics you learned about
 - What you hope to learn in the future after everything you've learned at BSE
 
+```c++
+#include <Adafruit_LSM6DS3TRC.h>
+#include <BLEDevice.h>
+#include <BLEServer.h>
+#include <BLEUtils.h>
+#include <BLE2902.h>
+
+Adafruit_LSM6DS3TRC lsm6ds;
+
+// ---------- BLE (Nordic UART Service) ----------
+#define SERVICE_UUID  "6E400001-B5A3-F393-E0A9-E50E24DCCA9E"
+#define CHAR_UUID_TX  "6E400003-B5A3-F393-E0A9-E50E24DCCA9E"
+#define CHAR_UUID_RX  "6E400002-B5A3-F393-E0A9-E50E24DCCA9E"
+
+BLECharacteristic *pTxCharacteristic;
+bool deviceConnected = false;
+
+class MyServerCallbacks : public BLEServerCallbacks {
+  void onConnect(BLEServer *pServer)    { deviceConnected = true; }
+  void onDisconnect(BLEServer *pServer) {
+    deviceConnected = false;
+    pServer->startAdvertising();   // allow reconnect
+  }
+};
+
+// Send a line to both Serial and BLE
+void sendBoth(String msg) {
+  Serial.print(msg);
+  if (deviceConnected) {
+    pTxCharacteristic->setValue(msg.c_str());
+    pTxCharacteristic->notify();
+  }
+}
+
+// ---------- Pins ----------
+#define FLEX_PIN   32   // analog input from flex sensor divider
+#define BUZZER_PIN 13   // active buzzer
+
+// ---- Squat detection (X axis) ----
+const float SQUAT_X_THRESHOLD = 9.0;   // X below this = squat, above = standing
+
+// ---- Cave detection (Z axis) ----
+const float CAVE_Z_THRESHOLD = -2.0;   // while squatting, Z below this = caving
+
+// ---- Flex over-bend (raw values) ----
+const int FLEX_UPPER_LIMIT = 1900;   // raw reading = bent too far
+const int FLEX_LOWER_LIMIT = 320;    // raw reading = bent too far (other direction)
+
+// ---- Consecutive-reading confirmation ----
+const int CAVE_CONFIRM_COUNT = 2;    // caving reads in a row needed to buzz
+
+const int SAMPLES = 5;   // light averaging
+
+int caveStreak = 0;      // counts consecutive caving readings
+
+// ---- BLE status streaming rate limit ----
+unsigned long lastBLEStatus = 0;
+const unsigned long BLE_STATUS_INTERVAL = 1000;  // send status once per second
+
+void setup() {
+  Serial.begin(115200);
+  while (!Serial) delay(10);
+  pinMode(BUZZER_PIN, OUTPUT);
+  Wire.begin(21, 22);
+  if (!lsm6ds.begin_I2C()) { Serial.println("Sensor not found!"); while (1) delay(10); }
+
+  // --- BLE setup ---
+  BLEDevice::init("KneeRehab");
+  BLEServer *pServer = BLEDevice::createServer();
+  pServer->setCallbacks(new MyServerCallbacks());
+  BLEService *pService = pServer->createService(SERVICE_UUID);
+  pTxCharacteristic = pService->createCharacteristic(
+                        CHAR_UUID_TX,
+                        BLECharacteristic::PROPERTY_NOTIFY
+                      );
+  pService->createCharacteristic(
+    CHAR_UUID_RX,
+    BLECharacteristic::PROPERTY_WRITE
+  );
+  pTxCharacteristic->addDescriptor(new BLE2902());
+  pService->start();
+  pServer->getAdvertising()->addServiceUUID(SERVICE_UUID);
+  pServer->getAdvertising()->start();
+  Serial.println("BLE ready - connect to 'KneeRehab'");
+
+  Serial.println("Ready - start squatting!");
+}
+
+// Two short beeps = knee caving inward
+void beepInward() {
+  for (int i = 0; i < 2; i++) {
+    digitalWrite(BUZZER_PIN, HIGH); delay(120);
+    digitalWrite(BUZZER_PIN, LOW);  delay(120);
+  }
+}
+
+// Long continuous buzz = bent too far
+void buzzOverBend() {
+  digitalWrite(BUZZER_PIN, HIGH);
+  delay(600);
+  digitalWrite(BUZZER_PIN, LOW);
+}
+
+void loop() {
+  // --- Flex sensor: raw reading ---
+  int flexRaw = analogRead(FLEX_PIN);
+
+  // --- Accelerometer: averaged X and Z ---
+  float xAvg = 0, zAvg = 0;
+  for (int i = 0; i < SAMPLES; i++) {
+    sensors_event_t a, g, t;
+    lsm6ds.getEvent(&a, &g, &t);
+    xAvg += a.acceleration.x;
+    zAvg += a.acceleration.z;
+    delay(5);
+  }
+  xAvg /= SAMPLES;
+  zAvg /= SAMPLES;
+
+  bool inSquat = (xAvg < SQUAT_X_THRESHOLD);
+  bool caving  = inSquat && (zAvg < CAVE_Z_THRESHOLD);
+
+  // --- Track consecutive caving readings ---
+  if (caving) {
+    caveStreak++;
+  } else {
+    caveStreak = 0;
+  }
+
+  // --- Build the status line ---
+  String status = "Flex: " + String(flexRaw)
+                + " | X: " + String(xAvg, 2)
+                + " | Z: " + String(zAvg, 2);
+  if (!inSquat)      status += "  -> STANDING";
+  else if (caving)   status += "  -> SQUATTING WHILE CAVING!";
+  else               status += "  -> SQUAT (good)";
+
+  // Always print to Serial (when on laptop)
+  Serial.println(status);
+
+  // Send status to BLE only once per second (so it doesn't flood)
+  if (millis() - lastBLEStatus > BLE_STATUS_INTERVAL) {
+    if (deviceConnected) {
+      pTxCharacteristic->setValue((status + "\n").c_str());
+      pTxCharacteristic->notify();
+    }
+    lastBLEStatus = millis();
+  }
+
+  // --- Fault 1: knee caving inward (needs consecutive confirmation) ---
+  if (caveStreak >= CAVE_CONFIRM_COUNT) {
+    sendBoth(">>> KNEE CAVING INWARD!\n");
+    beepInward();
+    caveStreak = 0;
+  }
+
+  // --- Fault 2: flex sensor bent too far ---
+  if ( (flexRaw > FLEX_UPPER_LIMIT) || (flexRaw < FLEX_LOWER_LIMIT) ) {
+    sendBoth(">>> OVER-BEND! Come back up.\n");
+    buzzOverBend();
+  }
+
+  delay(50);
+}
+```
+
+
+
 -->
 
 # Second Milestone
