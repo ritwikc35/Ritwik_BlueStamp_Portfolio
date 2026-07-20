@@ -26,6 +26,7 @@ For your final milestone, explain the outcome of your project. Key details to in
 - What your biggest challenges and triumphs were at BSE
 - A summary of key topics you learned about
 - What you hope to learn in the future after everything you've learned at BSE
+-->
 
 ```c++
 #include <Adafruit_LSM6DS3TRC.h>
@@ -192,10 +193,6 @@ void loop() {
   delay(50);
 }
 ```
-
-
-
--->
 
 # Second Milestone
 
