@@ -473,7 +473,7 @@ Here's where you'll put images of your schematics. [Tinkercad](https://www.tinke
 # Other Resources + Links for helpful stuff:
 - [C callback using class member](https://stackoverflow.com/questions/14189440/c-callback-using-class-member)
 - [How to work with an ESP-32](http://youtube.com/watch?v=xPlN_Tk3VLQ)
-- [How to connect ESP-23 via BLE to iPhone](https://www.youtube.com/watch?v=_II-yErXIiI)
+- [How to connect ESP-32 via BLE to iPhone](https://www.youtube.com/watch?v=_II-yErXIiI)
 - [ESP-32 Pinout](https://microcontrollerslab.com/esp32-pinout-use-gpio-pins/)
 - [How to sew](https://www.youtube.com/watch?v=QhZTc1x1-pM)
 - [How to use an IMU](https://www.youtube.com/watch?v=3mgSi0RkANc)
