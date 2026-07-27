@@ -211,7 +211,7 @@ void loop() {
 ## Milestone 3 Ideas
 - Milestone three will involve sewing all the components to the knee sleeve, integrating a session tracker (reps, sets, etc) into the code, streaming session data over bluetooth/wifi to a handheld device, and ensuring the wires are all secure and that none will come off easily.
 
-# Code
+## Second Milestone Code
 ```c++
 #include <Adafruit_LSM6DS3TRC.h>
 Adafruit_LSM6DS3TRC lsm6ds;
@@ -334,7 +334,7 @@ void loop() {
 ## Milestone 2 Ideas
 - The next milestone and the rest of the plan to complete this project includes integrating this hardware with a knee sleeve, and ensuring all the components do their job when the user is performing a squat. 
 
-# Code
+## First Milestone Code
 ```c++
 #include <Adafruit_LSM6DS3TRC.h>
 #include <Adafruit_LIS3MDL.h>
