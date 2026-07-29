@@ -15,18 +15,29 @@ This project is a wearable knee rehabilitation device that helps people perform 
 
 ![Headshot](/docs/assets/ritwikc-1.png)
   
-<!--# Final Milestone-->
+# Final Milestone
 
-<!--**Don't forget to replace the text below with the embedding for your milestone video. Go to Youtube, click Share -> Embed, and copy and paste the code to replace what's below.**
+**Don't forget to replace the text below with the embedding for your milestone video. Go to Youtube, click Share -> Embed, and copy and paste the code to replace what's below.**
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/F7M7imOVGug" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/v6Oz-d7jixI?si=x5PED9J-iX5cgj8t" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-For your final milestone, explain the outcome of your project. Key details to include are:
-- What you've accomplished since your previous milestone
-- What your biggest challenges and triumphs were at BSE
-- A summary of key topics you learned about
-- What you hope to learn in the future after everything you've learned at BSE
--->
+## Milestone 3 Descripton
+- Milestone 3 was sewing all the components down to the knee sleeve using neoprene fabric, recalibrating every single sensor, and streaming all the session data via Bluetooth to an iPhone
+- The circuiting all stayed the same, and it is consistent with the schematic.
+- I sewed a flap down to the electronic parts so that nothing electronic was sticking out and everything was protected, however it is secured with velcro, so whenever any changes need to be made, you can unstrap the flap, fix anything, and then strap it back on
+- The flex sensor is now sewn to the back of the knee sleeve, and the IMU is mounted on the breadboard itself.
+
+## Struggles/Challenges
+- This milestone featured a myriad of challenges, such as figuring out what axis of the IMU corresponded to the knee caving inward, figuring out how to mount each sensor without tape, and soldering the flex sensor to wiring so that it could extend to the back of the knee
+- Additionally, it was difficult learning how to sew and working with velcro since both of these were new to me
+- Whenever the IMU shifted even slightly, the threshold values would change and it would mess up the detection system
+- Finally, figuring out how to mount the flex sensor such that it would bend correctly was a big challenge - I tried tape, fabric, and finally settled on sewing it down
+- With lots of trial and error, and figuring out how to mount everything properly, I was able to overcome each one
+
+## Modification ideas
+- A couple modification ideas I have are to set levels (level 1, 2, 3, etc.) where as the levels increase, the flex sensor will allow a greater bend, increasing the difficulty of the squat
+- Additionally, I want to add a green and red LED to introduce visual feedback instead of just audio
+
 
 ```c++
 #include <Adafruit_LSM6DS3TRC.h>
