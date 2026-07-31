@@ -31,6 +31,230 @@ This project is a wearable knee rehabilitation device that helps people perform 
 - Additionally, coding the levels button was tough since I had to learn how to code buttons.
 - Finally, I had to learn to sew and it took tons of trial and error when practicing sewing. I eventually got a final product I was very happy with.
 
+## Code
+```c++
+#include <Adafruit_LSM6DS3TRC.h>
+#include <BLEDevice.h>
+#include <BLEServer.h>
+#include <BLEUtils.h>
+#include <BLE2902.h>
+
+Adafruit_LSM6DS3TRC lsm6ds;
+
+// ---------- BLE (Nordic UART Service) ----------
+#define SERVICE_UUID  "6E400001-B5A3-F393-E0A9-E50E24DCCA9E"
+#define CHAR_UUID_TX  "6E400003-B5A3-F393-E0A9-E50E24DCCA9E"
+#define CHAR_UUID_RX  "6E400002-B5A3-F393-E0A9-E50E24DCCA9E"
+
+BLECharacteristic *pTxCharacteristic;
+bool deviceConnected = false;
+
+class MyServerCallbacks : public BLEServerCallbacks {
+  void onConnect(BLEServer *pServer)    { deviceConnected = true; }
+  void onDisconnect(BLEServer *pServer) {
+    deviceConnected = false;
+    pServer->startAdvertising();
+  }
+};
+
+void sendBoth(String msg) {
+  Serial.print(msg);
+  if (deviceConnected) {
+    pTxCharacteristic->setValue(msg.c_str());
+    pTxCharacteristic->notify();
+  }
+}
+
+// ---------- Pins ----------
+#define FLEX_PIN   32
+#define BUZZER_PIN 13
+#define RED_LED    25
+#define GREEN_LED  26
+#define BUTTON_PIN 27
+
+// ---- LEVEL SYSTEM ----
+// Higher level = more bend allowed before it warns.
+const int LEVEL_THRESHOLDS[3] = { 210, 300, 400 };   // level 1, 2, 3
+int currentLevel = 0;                                 // 0-indexed: 0=L1, 1=L2, 2=L3
+
+// ---- Flex over-bend ----
+const int OVERBEND_CONFIRM_COUNT = 2;
+const int FLEX_SAMPLES = 50;
+
+// ---- Squat detection (X axis) ----
+const float SQUAT_X_THRESHOLD = 9;
+
+// ---- Cave detection (Z axis) ----
+const float CAVE_Z_THRESHOLD = 6;
+
+// ---- Consecutive-reading confirmation ----
+const int CAVE_CONFIRM_COUNT = 2;
+
+const int SAMPLES = 5;
+
+int caveStreak     = 0;
+int overBendStreak = 0;
+
+bool lastButtonState = HIGH;   // for button edge detection
+
+unsigned long lastBLEStatus = 0;
+const unsigned long BLE_STATUS_INTERVAL = 1000;
+
+void setLEDs(bool green, bool red) {
+  digitalWrite(GREEN_LED, green ? HIGH : LOW);
+  digitalWrite(RED_LED,   red   ? HIGH : LOW);
+}
+
+// Beep N times to announce the level (1 beep = L1, 2 = L2, 3 = L3)
+void announceLevel(int level) {
+  for (int i = 0; i <= level; i++) {
+    digitalWrite(BUZZER_PIN, HIGH);
+    setLEDs(false, true);
+    delay(100);
+    digitalWrite(BUZZER_PIN, LOW);
+    setLEDs(true, false);
+    delay(150);
+  }
+}
+
+void setup() {
+  Serial.begin(115200);
+  while (!Serial) delay(10);
+  pinMode(BUZZER_PIN, OUTPUT);
+  pinMode(RED_LED, OUTPUT);
+  pinMode(GREEN_LED, OUTPUT);
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
+  setLEDs(true, false);
+  Wire.begin(21, 22);
+  if (!lsm6ds.begin_I2C()) { Serial.println("Sensor not found!"); while (1) delay(10); }
+
+  BLEDevice::init("KneeRehab");
+  BLEServer *pServer = BLEDevice::createServer();
+  pServer->setCallbacks(new MyServerCallbacks());
+  BLEService *pService = pServer->createService(SERVICE_UUID);
+  pTxCharacteristic = pService->createCharacteristic(
+                        CHAR_UUID_TX, BLECharacteristic::PROPERTY_NOTIFY);
+  pService->createCharacteristic(CHAR_UUID_RX, BLECharacteristic::PROPERTY_WRITE);
+  pTxCharacteristic->addDescriptor(new BLE2902());
+  pService->start();
+  pServer->getAdvertising()->addServiceUUID(SERVICE_UUID);
+  pServer->getAdvertising()->start();
+  Serial.println("BLE ready - connect to 'KneeRehab'");
+
+  Serial.print("Starting at LEVEL 1 (limit ");
+  Serial.print(LEVEL_THRESHOLDS[0]);
+  Serial.println(") - press button to change level");
+}
+
+void beepInward() {
+  setLEDs(false, true);
+  for (int i = 0; i < 2; i++) {
+    digitalWrite(BUZZER_PIN, HIGH); delay(120);
+    digitalWrite(BUZZER_PIN, LOW);  delay(120);
+  }
+}
+
+void buzzOverBend() {
+  setLEDs(false, true);
+  digitalWrite(BUZZER_PIN, HIGH);
+  delay(600);
+  digitalWrite(BUZZER_PIN, LOW);
+}
+
+void loop() {
+  // --- Button: cycle level 1 -> 2 -> 3 -> 1 ---
+  bool buttonNow = digitalRead(BUTTON_PIN);
+  if (lastButtonState == HIGH && buttonNow == LOW) {   // just pressed
+    currentLevel = (currentLevel + 1) % 3;
+    sendBoth(">>> LEVEL " + String(currentLevel + 1)
+             + "  (limit " + String(LEVEL_THRESHOLDS[currentLevel]) + ")\n");
+    announceLevel(currentLevel);
+    delay(50);   // debounce
+  }
+  lastButtonState = buttonNow;
+
+  // The active threshold for this level
+  int flexLimit = LEVEL_THRESHOLDS[currentLevel];
+
+  // --- Flex sensor: heavy averaging ---
+  long flexSum = 0;
+  for (int i = 0; i < FLEX_SAMPLES; i++) {
+    flexSum += analogRead(FLEX_PIN);
+    delay(1);
+  }
+  int flexRaw = flexSum / FLEX_SAMPLES;
+
+  // --- Accelerometer: averaged X, Y, Z ---
+  float xAvg = 0, zAvg = 0, yAvg = 0;
+  for (int i = 0; i < SAMPLES; i++) {
+    sensors_event_t a, g, t;
+    lsm6ds.getEvent(&a, &g, &t);
+    xAvg += a.acceleration.x;
+    zAvg += a.acceleration.z;
+    yAvg += a.acceleration.y;
+    delay(5);
+  }
+  xAvg /= SAMPLES;
+  zAvg /= SAMPLES;
+  yAvg /= SAMPLES;
+
+  bool inSquat = (xAvg < SQUAT_X_THRESHOLD);
+
+  // --- STANDING OVERRIDE ---
+  if (!inSquat) {
+    caveStreak = 0;
+  }
+
+  bool caving = inSquat && (zAvg < CAVE_Z_THRESHOLD);
+  if (caving) caveStreak++; else caveStreak = 0;
+
+  // --- Over-bend uses the CURRENT LEVEL's threshold ---
+  bool overBent = (flexRaw > 0) && (flexRaw < 4095) && (flexRaw > flexLimit);
+  if (overBent) overBendStreak++; else overBendStreak = 0;
+
+  // --- LED state: green by default, red on any fault ---
+  bool fault = caving || overBent;
+  setLEDs(!fault, fault);
+
+  // --- Build status line ---
+  String status = "L" + String(currentLevel + 1)
+                + " (lim " + String(flexLimit) + ")"
+                + " | FlexRaw: " + String(flexRaw)
+                + " | X: " + String(xAvg, 2)
+                + " | Y: " + String(yAvg, 2)
+                + " | Z: " + String(zAvg, 2);
+  if (!inSquat)      status += "  -> STANDING";
+  else if (caving)   status += "  -> SQUATTING WHILE CAVING!";
+  else               status += "  -> SQUAT (good)";
+
+  Serial.println(status);
+
+  if (millis() - lastBLEStatus > BLE_STATUS_INTERVAL) {
+    if (deviceConnected) {
+      pTxCharacteristic->setValue((status + "\n").c_str());
+      pTxCharacteristic->notify();
+    }
+    lastBLEStatus = millis();
+  }
+
+  // --- Fault 1: knee caving inward ---
+  if (caveStreak >= CAVE_CONFIRM_COUNT) {
+    sendBoth(">>> KNEE CAVING INWARD!\n");
+    beepInward();
+    caveStreak = 0;
+  }
+
+  // --- Fault 2: bent too far (level-dependent) ---
+  if (overBendStreak >= OVERBEND_CONFIRM_COUNT) {
+    sendBoth(">>> OVER-BEND! Come back up.\n");
+    buzzOverBend();
+    overBendStreak = 0;
+  }
+
+  delay(20);
+}
+
+```
   
 # Final Milestone
 
