@@ -14,10 +14,25 @@ This project is a wearable knee rehabilitation device that helps people perform 
 <!--**Replace the BlueStamp logo below with an image of yourself and your completed project. Follow the guide [here](https://tomcam.github.io/least-github-pages/adding-images-github-pages-site.html) if you need help.** -->
 
 ![Headshot](/docs/assets/ritwikc-1.png)
+
+# Modifications
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/qC0WXbxvukE?si=80XLl2OVZbpWqIw3" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+## Modifications Descripton
+- I did three modifications
+- One of them was the fabric flap that goes around all the electronic parts. I made it a velcro strap and sewed it down on on end so it can be removed
+- Another one was integrating LED lights to the system that detects a poor squat. Now, instead of only audible feedback on squats (buzzer), there is now visual feedback as well. The green LED is lit when the user's squat is good so far. It switches to a red LED when the user's knee is caving in, or when they reached the bottom of their squat. This provides visual feedback on the user's squat form
+- The third one was integrating levels of difficulty in the squat. The first level (changed with buttons) is the easiest - the flex sensor allows the least amount of bend. The second level is medium - the flex sensor allows more bend. The third level is the hardest - the flex sensor allows the most bend. Essentially, the threshold for the flex sensor's bend increases as the levels increase. 
+
+## Struggles/Challenges
+- These modifications were slightly challenging since I had never wired LED's before. I had to learn to on my own, and especially since polarity matters greatly, it was tedious to wire these LEDs in
+- I also learned more about resistors and how they work, and how different types of resistors affect current
+- Additionally, coding the levels button was tough since I had to learn how to code buttons.
+- Finally, I had to learn to sew and it took tons of trial and error when practicing sewing. I eventually got a final product I was very happy with.
+
   
 # Final Milestone
-
-**Don't forget to replace the text below with the embedding for your milestone video. Go to Youtube, click Share -> Embed, and copy and paste the code to replace what's below.**
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/v6Oz-d7jixI?si=x5PED9J-iX5cgj8t" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
