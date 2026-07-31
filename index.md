@@ -682,7 +682,7 @@ void loop() {
 
 # Schematic
 
-![Schematic](/docs/assets/schematic2.png)
+![Schematic](/docs/assets/SchematicBest.png)
 
 ## Labels:
 
@@ -692,6 +692,8 @@ void loop() {
 4. Active Buzzer. Gets current from breadboard and ESP-32 to, when prompted, create a beeping sound. This sound cannot be altered pitch or frequency wise, however what can be altered is the buzzing pattern. I used this to differentiate the improper form caused by knee caving versus over-bend.
 5. 10k Ω Resistor. This resistor is used to limit the current from the ESP-32 to the Flex Sensor to prevent a short circuit.
 6. STEMMA QT / Qwiic JST SH 4-pin cable. This cable is used to connect into the Adafruit IMU. It has four cables - Red, Black, Blue, and Yellow. Red goes to power (3V3), Black goes to ground (GND), and Blue and Yellow go to the D21 and D22 pinouts in the microcontroller.
+7. LEDs. These Red and Green LEDs are used to provide visual feedback to the user and are a part of my modifications. They are wired to Ground and Pinout, and they require 560 Ohm resistors.
+8. Button. This button sets the levels for the difficulty of each squat. 
 
 <!--# Schematics 
 Here's where you'll put images of your schematics. [Tinkercad](https://www.tinkercad.com/blog/official-guide-to-tinkercad-circuits) and [Fritzing](https://fritzing.org/learning/) are both great resoruces to create professional schematic diagrams, though BSE recommends Tinkercad becuase it can be done easily and for free in the browser. -->
